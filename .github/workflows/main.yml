@@ -1,0 +1,49 @@
+name: "Daily Fudan"
+
+on:
+  schedule: # scheduled at (UTC+8) everyday
+    - cron: "23 20 * * *"
+    - cron: "24 6 * * *"
+  workflow_dispatch:
+
+env:
+  RUN_ENV: 'prod'
+  TZ: 'Asia/Shanghai'
+  FUCK_GH_PAT: ${{ secrets.GH_PAT }}
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout master with GH_PAT
+        if: ${{ env.FUCK_GH_PAT }}
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+          ref: main
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Checkout master without GH_PAT
+        if: ${{ !env.FUCK_GH_PAT }}
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Random sleep
+        if: github.event_name == 'schedule'
+        run: sleep $(shuf -i 10-300 -n 1)
+
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: edit_actions.py
+        if: ${{ env.FUCK_GH_PAT }}
+        run: python3 ./edit_actions.py '${{ secrets.SCHEDULE }}'
+
+      - name: run.py
+        run: python3 ./run.py '${{ secrets.FUDAN }}'
