@@ -107,7 +107,7 @@ def get_my_arg():
     if not arg:
         print('use default SCHEDULE')
         return
-    SCHEDULE = arg
+    SCHEDULE = arg.strip().split(' ')
     global am_inf, am_sup, pm_inf, pm_sup, t_inf, t_sup
     if len(SCHEDULE) == 6:
         am_inf = int(SCHEDULE[0])
