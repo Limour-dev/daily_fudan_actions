@@ -2,8 +2,8 @@ name: "Daily Fudan"
 
 on:
   schedule: # scheduled at (UTC+8) everyday
-    - cron: "23 20 * * *"
-    - cron: "24 6 * * *"
+    - cron: "2 18 * * *"
+    - cron: "57 7 * * *"
   workflow_dispatch:
 
 env:
@@ -31,10 +31,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
-
-      - name: Random sleep
-        if: github.event_name == 'schedule'
-        run: sleep $(shuf -i 10-300 -n 1)
 
       - name: Set up python
         uses: actions/setup-python@v2
