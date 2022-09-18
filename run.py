@@ -1,8 +1,8 @@
 from git_base import *
 from sys import exit as sys_exit
 
-daily_fudan_core = r'https://github.com/Limour-dev/daily_fudan_core.git'
-daily_fudan_actions = r'https://github.com/Limour-dev/daily_fudan_actions.git'
+daily_fudan_core = r'https://github.com/Ricardo-Evans/daily_fudan_core.git'
+daily_fudan_actions = r'https://github.com/Ricardo-Evans/daily_fudan_actions.git'
 
 try_call(git_add_upstream, daily_fudan_core)
 
