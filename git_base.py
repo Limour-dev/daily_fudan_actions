@@ -84,7 +84,7 @@ def git_c2upstream():
 
 def git_push():
     ret, val = subprocess.getstatusoutput("git status")
-    if ret or "noting to commit" in val:
+    if ret or "nothing to commit" in val:
         print(ret, val)
         return 1
     lines = [
