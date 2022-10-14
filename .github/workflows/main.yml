@@ -2,44 +2,36 @@ name: "Daily Fudan"
 
 on:
   schedule: # scheduled at (UTC+8) everyday
-    - cron: "14 17 * * *"
-    - cron: "36 10 * * *"
+    - cron: "0 11 * * *"
+    - cron: "0 23 * * *"
   workflow_dispatch:
 
 env:
   RUN_ENV: 'prod'
   TZ: 'Asia/Shanghai'
-  FUCK_GH_PAT: ${{ secrets.GH_PAT }}
-  
+
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/master'
 
     steps:
-      - name: Checkout master with GH_PAT
-        if: ${{ env.FUCK_GH_PAT }}
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
         with:
-          fetch-depth: 2
-          ref: main
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Checkout master without GH_PAT
-        if: ${{ !env.FUCK_GH_PAT }}
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: main
-
-      - name: Set up python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: edit_actions.py
-        if: ${{ env.FUCK_GH_PAT }}
-        run: python3 ./edit_actions.py '${{ secrets.SCHEDULE }}'
-
-      - name: run.py
+          python-version: "3.10"
+      - name: auto edit everyday
+        run: python3 ./edit.py
+      - name: daily fudan
         run: python3 ./run.py '${{ secrets.FUDAN }}'
+      - name: push
+        run: |
+          git config user.name 'Github Actions'
+          git config user.email 'github-actions@github.com'
+          git add .
+          git commit -m 'update by github actions'
+          git push
