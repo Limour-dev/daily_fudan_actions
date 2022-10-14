@@ -73,7 +73,7 @@ def is_pm():
     uctnow = uctnow.hour
     if uctnow < t_inf:
         uctnow += 24
-    return t_inf < uctnow < t_sup
+    return t_inf <= uctnow <= t_sup
     
 def get_schedule():
     return schedule_template%(getRandCron_am(),getRandCron_pm())
